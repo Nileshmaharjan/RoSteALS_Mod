@@ -1,0 +1,83 @@
+model:
+  target: cldm.d2c.DenseD2C
+  params:
+    first_stage_key: "image"
+    control_key: "secret"
+    first_stage_config:
+      target: cldm.d2c.D2CEncoder
+      params:
+        height: 256
+        width: 256
+
+    decoder_config:
+      target: cldm.d2c.D2CDecoder
+      params:
+        height: 256
+        width: 256
+
+    control_config:
+      target: cldm.ae.SecretEncoder3
+      params:
+        secret_len: 100
+        resolution: 64
+        base_res: 32
+    loss_config:
+      target: cldm.loss.ImageSecretLoss
+      params:
+        recon_type: yuv
+        recon_weight: 1.5
+        perceptual_weight: 1.0
+        secret_weight: 10.0
+        kl_weight: 0.0
+        max_image_weight_ratio: 10.0
+    noise_config:
+      target: cldm.transformations.TransformNet
+      params:
+        do_jpeg: True
+        ramp: 10000
+        imagenetc_level: 5
+
+data:
+  target: tools.imgcap_dataset.DataModuleFromConfig
+  params:
+    batch_size: 8
+    num_workers: 4
+    wrap: false
+    use_worker_init_fn: true
+    train:
+      target: tools.image_dataset.ImageFolder
+      params:
+        data_dir: data/mir1M/images
+        data_list: prep_data/mir_train2.csv
+        resize: 256
+    validation:
+      target: tools.image_dataset.ImageFolder
+      params:
+        data_dir: data/mir1M/images
+        data_list: prep_data/mir_val2.csv
+        resize: 256
+
+lightning:
+  callbacks:
+    image_logger:
+      target: cldm.logger.ImageLogger
+      params:
+        batch_frequency: 5000
+        max_images: 4
+        increase_log_steps: False
+        fixed_input: True
+    progress_bar:
+      target: pytorch_lightning.callbacks.ProgressBar
+      params:
+        refresh_rate: 100
+    checkpoint:
+      target: pytorch_lightning.callbacks.ModelCheckpoint
+      params:
+        verbose: true
+        filename: '{epoch:06}-{step:09}'
+        every_n_train_steps: 50000
+
+  trainer:
+    benchmark: True
+    base_learning_rate: 2e-5
+    accumulate_grad_batches: 1

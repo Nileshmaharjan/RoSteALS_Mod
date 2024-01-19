@@ -142,5 +142,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 data/
-models/
+models/first_stage_models/
+models/RoSteALS/
 saved_models/
