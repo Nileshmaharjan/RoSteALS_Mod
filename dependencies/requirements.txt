@@ -1,0 +1,36 @@
+requests == 2.25.1
+setuptools == 59.5.0
+h5py == 3.3.0
+h5py-cache == 1.0
+tqdm == 4.64.0
+pandas == 1.4.2
+Pillow == 9.4.0
+matplotlib == 3.4.2
+tensorboard == 2.8.0
+tensorboardx == 2.5
+scikit-learn == 1.0.2
+scikit-image == 0.19.2
+slackclient == 2.9.3
+reportlab == 3.6.0
+scipy == 1.8.0
+ImageHash == 4.2.1
+wandb == 0.12.15
+faiss-gpu == 1.7.2
+joblib == 1.0.1
+augly == 0.1.6
+ffmpeg-python == 0.2.0
+ipython == 8.2.0
+dlib == 19.23.1
+streamlit == 1.20.0
+easydict == 1.10
+protobuf == 3.19.*
+albumentations==0.4.3
+opencv-python==4.1.2.30
+pudb==2019.2
+imageio==2.9.0
+imageio-ffmpeg==0.4.2
+omegaconf==2.1.1
+einops==0.3.0
+bchlib == 0.14.0
+ninja==1.11.1
+gradio==3.20.0
